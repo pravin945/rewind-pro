@@ -1,6 +1,6 @@
 {
-    "name": "motorshop_manager",
-    "short_name": "motorshop_manager",
+    "name": "RewindPro",
+    "short_name": "RewindPro",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",

@@ -708,7 +708,7 @@ class PdfInvoiceService {
                 mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
                 children: [
                   pw.Text('Report Generated: $generatedOnStr', style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey600)),
-                  pw.Text('MotorShop Manager • Pratap Electricals', style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey600)),
+                  pw.Text('RewindPro • Pratap Electricals', style: const pw.TextStyle(fontSize: 9, color: PdfColors.grey600)),
                 ],
               ),
             ],

@@ -1,4 +1,4 @@
-# ⚡ MotorShop Manager (मोटरशॉप मॅनेजर)
+# ⚡ RewindPro (रिवाइंड प्रो)
 
 [![Flutter](https://img.shields.io/badge/Flutter-3.41.7-02569B?logo=flutter)](https://flutter.dev)
 [![Dart](https://img.shields.io/badge/Dart-3.11.5-0175C2?logo=dart)](https://dart.dev)
@@ -7,7 +7,7 @@
 [![Tests Passing](https://img.shields.io/badge/Tests-43%20Passing-success)](test/)
 [![Platform](https://img.shields.io/badge/Platform-Android-3DDC84?logo=android)](https://www.android.com)
 
-**MotorShop Manager** is a complete, offline-first Android mobile application built specifically for motor rewinding, pump repair, and electrical engineering workshops. 
+**RewindPro (रिवाइंड प्रो)** is a complete, offline-first Android mobile application built specifically for motor rewinding, pump repair, and electrical engineering workshops. 
 
 The application is fully tailored for **Pratap Electricals & Motor Rewinding (प्रताप इलेक्ट्रिकल्स & मोटर रिवाइंडिंग)**, owned and managed by **Dinesh Jadhav (दिनेश जाधव)**, Contact: **9623314436**.
 

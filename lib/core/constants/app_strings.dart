@@ -45,8 +45,8 @@ class AppStrings {
 
   // App Title
   String get appTitle => lang == AppLanguage.english
-      ? 'MotorShop Manager'
-      : 'मोटरशॉप मॅनेजर (MotorShop Manager)';
+      ? 'RewindPro'
+      : 'रिवाइंड प्रो (RewindPro)';
 
   // Bottom Nav
   String get navHome => lang == AppLanguage.english

@@ -121,8 +121,8 @@ class BackupService {
       final xFile = XFile(result.filePath!);
       await Share.shareXFiles(
         [xFile],
-        text: 'MotorShop Manager Offline Data Backup (${p.basename(result.filePath!)})',
-        subject: 'MotorShop Manager Backup',
+        text: 'RewindPro Offline Data Backup (${p.basename(result.filePath!)})',
+        subject: 'RewindPro Backup',
       );
       return result;
     } catch (e) {

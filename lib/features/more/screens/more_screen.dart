@@ -122,7 +122,7 @@ class MoreScreen extends ConsumerWidget {
           const SizedBox(height: 20),
           Center(
             child: Text(
-              'MotorShop Manager v1.0 • Offline-First',
+              'RewindPro v1.0 • Offline-First',
               style: TextStyle(fontSize: 12, color: Colors.grey.shade500),
             ),
           ),
