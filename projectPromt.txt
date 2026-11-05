@@ -1,0 +1,756 @@
+# Project: MotorShop Manager – Motor Rewinding & Sales Management App
+
+Act as a Senior Flutter Developer, Mobile Application Architect, Database Designer, and UI/UX Engineer.
+
+I want you to develop a complete, production-quality Android mobile application for a small motor rewinding and motor pump sales business.
+
+This application is exclusively for the shop owner. It will be installed directly on his Android mobile phone. It will NOT be published on the Google Play Store or any other platform.
+
+The application must work offline and must not require any paid service.
+
+## 1. Technology Stack
+
+Use the following technologies:
+
+- Flutter (latest stable version)
+- Dart
+- SQLite using Drift ORM
+- Riverpod for state management
+- GoRouter for navigation
+- Google Drive API for backup and restore
+- Google Sign-In for Google account authentication
+- Android WorkManager for scheduled backup
+- PDF package for invoice generation
+- Share Plus / native Android sharing for PDF sharing
+- Native Android SMS composer for SMS messages
+- Flutter Local Notifications for reminders
+- Flutter Secure Storage for sensitive credentials
+
+Do not create a backend server.
+
+Do not use ASP.NET Core, Firebase, Supabase, paid cloud databases, paid APIs, or paid hosting.
+
+All daily business data must be stored in the mobile's local SQLite database.
+
+Google Drive is ONLY for backup and restore.
+
+## 2. Application Language
+
+The application must support Marathi and English mixed language.
+
+Examples of labels:
+
+- Dashboard – आजचा हिशोब
+- Add Customer – नवीन ग्राहक
+- New Bill – नवीन बिल
+- Daily Work – आजचे काम
+- Pending Payments – बाकी रक्कम
+- Received Payment – जमा पेमेंट
+- Total Sales – एकूण विक्री
+- Motor Details – मोटर माहिती
+- Repair Status – कामाची स्थिती
+- Backup – डेटा बॅकअप
+
+Use simple Marathi-English terminology that a local shop owner can understand.
+
+Provide a language setting to switch between Marathi and English.
+
+Default language: Marathi-English mixed.
+
+Use proper Unicode fonts that support Marathi in PDFs.
+
+## 3. Dashboard
+
+Create an attractive, simple dashboard.
+
+Display:
+
+- आजची एकूण कमाई
+- आजची जमा रक्कम
+- आजची बाकी रक्कम
+- आजची नवीन कामे
+- चालू असलेली कामे
+- Completed jobs
+- Delivered motors
+- Total pending customer payments
+- Today's sales
+- Low stock products
+
+Provide quick action buttons:
+
+1. Add Customer
+2. New Repair Job
+3. Create Bill
+4. Receive Payment
+5. Sell Motor/Pump
+6. Sell Spare Parts
+
+All dashboard amounts must be calculated from actual database records.
+
+Allow date filtering for daily, weekly, monthly and custom date reports.
+
+## 4. Customer Management
+
+Create a complete customer management module.
+
+Customer fields:
+
+- Customer ID (auto-generated)
+- Customer Name
+- Mobile Number
+- Alternate Mobile Number (optional)
+- Address
+- Village / City
+- Notes
+- Created Date
+
+Features:
+
+- Add customer
+- Edit customer
+- Search customer by name or mobile number
+- View customer details
+- View all repair jobs
+- View all bills
+- View all payments
+- View total billed amount
+- View total received amount
+- View outstanding balance
+
+A customer can have multiple repair jobs and multiple bills.
+
+Do not create duplicate customers unnecessarily. Show a warning if a mobile number already exists, but allow the owner to proceed if appropriate.
+
+## 5. Motor Rewinding & Repair Job Management
+
+This is one of the most important modules.
+
+Create a job card whenever a customer brings a motor for repair.
+
+Job card fields:
+
+- Job ID (auto-generated)
+- Job Number (human-readable unique number)
+- Customer
+- Customer Mobile
+- Motor Type
+- Motor Brand
+- Motor HP
+- Motor Phase (Single Phase / Three Phase)
+- Motor Voltage
+- Motor Serial Number (optional)
+- Problem Description
+- Received Date
+- Expected Delivery Date
+- Work Description
+- Labour Charges
+- Material Charges
+- Other Charges
+- Discount
+- Final Amount
+- Advance Payment
+- Remaining Amount
+- Job Status
+- Delivery Date
+- Warranty Information
+- Notes
+
+Job statuses:
+
+- Received – मोटर जमा
+- Inspection – तपासणी सुरू
+- In Progress – काम चालू
+- Waiting for Parts – पार्ट्सची वाट पाहत आहे
+- Completed – काम पूर्ण
+- Delivered – ग्राहकाला दिले
+
+Allow the owner to update job status at any time.
+
+Maintain a complete history of status changes.
+
+Allow multiple spare parts to be added to a repair job.
+
+Each part should have:
+
+- Part Name
+- Quantity
+- Unit Price
+- Total Price
+
+Automatically calculate material costs and final job amount.
+
+Allow the owner to create a bill directly from a completed repair job.
+
+Do not create duplicate bills if a bill already exists for that job.
+
+## 6. Billing Management
+
+Create a professional invoice generation system.
+
+Support three bill categories:
+
+1. Motor Repair / Rewinding Bill
+2. Motor Pump Sales Bill
+3. Spare Parts Sales Bill
+
+Invoice fields:
+
+- Business Name
+- Shop Address
+- Shop Mobile Number
+- GSTIN (optional)
+- Invoice Number
+- Invoice Date
+- Customer Details
+- Bill Items
+- Quantity
+- Rate
+- Amount
+- Discount
+- Tax (optional)
+- Subtotal
+- Grand Total
+- Paid Amount
+- Previous Balance (if applicable)
+- Outstanding Amount
+- Payment Mode
+- Terms and Conditions
+
+Allow GST and non-GST billing.
+
+GST must be configurable in settings. Never assume that the business is GST registered.
+
+Support configurable tax rates and CGST/SGST or IGST calculations when applicable.
+
+Provide a professional printable PDF invoice.
+
+The PDF must:
+
+- Support Marathi and English.
+- Have a clean professional layout.
+- Include the shop name and contact details.
+- Show invoice number and date.
+- Show all purchased or repaired items.
+- Display total, paid and pending amounts.
+- Include payment information.
+- Be suitable for sharing through WhatsApp.
+
+Allow PDF preview, saving and sharing.
+
+Invoice numbers must be unique and sequential. Never reuse an invoice number after deleting or cancelling a bill.
+
+Use soft cancellation instead of permanent deletion for finalized invoices.
+
+## 7. Payment Management & Customer Ledger
+
+Implement a proper payment tracking system.
+
+A customer can make payments in multiple installments.
+
+Payment fields:
+
+- Payment ID
+- Customer ID
+- Related Invoice ID (optional)
+- Related Job ID (optional)
+- Payment Date
+- Amount Received
+- Payment Mode
+- Transaction Reference (optional)
+- Notes
+
+Payment modes:
+
+- Cash
+- UPI
+- Bank Transfer
+- Other
+
+When a payment is recorded:
+
+1. Save the payment transaction.
+2. Recalculate the relevant invoice balance.
+3. Recalculate the customer's outstanding balance.
+4. Update the customer ledger.
+5. Update dashboard totals.
+6. Make the payment visible in the payment history.
+
+Example:
+
+Invoice Amount: ₹10,000
+
+First Payment: ₹3,000
+
+Remaining: ₹7,000
+
+Second Payment: ₹2,000
+
+Remaining: ₹5,000
+
+Third Payment: ₹5,000
+
+Remaining: ₹0
+
+Never overwrite an earlier payment when adding a new payment.
+
+Maintain a complete transaction history.
+
+Create a Pending Payments screen with:
+
+- Customer Name
+- Mobile Number
+- Total Bill Amount
+- Total Paid
+- Remaining Balance
+- Oldest Pending Date
+- Number of Pending Bills
+
+Allow filtering and sorting by highest pending amount and oldest pending payment.
+
+Provide a customer-wise ledger with debit, credit and running balance.
+
+## 8. Motor Pump & Spare Parts Inventory
+
+The shop also sells complete motor pumps and motor parts.
+
+Create an inventory module.
+
+Product fields:
+
+- Product ID
+- Product Name
+- Category
+- Brand
+- Model Number
+- HP (optional)
+- Description
+- Purchase Price
+- Selling Price
+- Current Stock
+- Minimum Stock Level
+- Unit
+- Created Date
+
+Categories should be configurable.
+
+Examples:
+
+- Motor Pump
+- Copper Wire
+- Bearing
+- Capacitor
+- Mechanical Seal
+- Impeller
+- Starter
+- Cable
+- Other Spare Parts
+
+Features:
+
+- Add products
+- Edit products
+- Search products
+- Update stock
+- Record purchases
+- Record sales
+- View stock history
+- Low-stock warnings
+- Calculate product profit
+
+When a product is sold, automatically reduce inventory.
+
+When a product is used in a repair job, automatically reduce inventory.
+
+Prevent negative stock unless the owner explicitly enables an override.
+
+Record every stock movement with date, quantity, reason and reference.
+
+## 9. Sales Management
+
+Create a separate sales module for motor pumps and spare parts.
+
+Allow the owner to:
+
+- Select an existing customer or create a new customer.
+- Add multiple products to a single bill.
+- Change quantities.
+- Apply discounts.
+- Record full or partial payments.
+- Generate a sales invoice.
+- Update stock automatically.
+
+Allow walk-in sales without requiring customer registration.
+
+## 10. Customer Notification System
+
+Do not automatically send any message.
+
+The owner must manually review and send every customer message.
+
+Add a "Notify Customer" button in customer details, bill details and payment details.
+
+Show two options:
+
+### Option A: SMS
+
+Generate a short SMS message.
+
+Example:
+
+नमस्कार [Customer Name],
+
+आपल्या मोटर रिपेअरिंगचे बिल ₹[Bill Amount] आहे.
+
+आपण ₹[Paid Amount] जमा केले आहेत.
+
+आपली बाकी रक्कम ₹[Pending Amount] आहे.
+
+कृपया बाकी रक्कम लवकर जमा करावी.
+
+धन्यवाद!
+[Shop Name]
+
+Open the phone's default SMS application with the customer's number and prefilled message.
+
+Do not automatically send the SMS.
+
+### Option B: WhatsApp
+
+Generate a separate WhatsApp message.
+
+Example:
+
+नमस्कार [Customer Name] 🙏
+
+आपल्या मोटर रिपेअरिंग / खरेदीचे बिल तयार आहे.
+
+Bill Amount: ₹[Bill Amount]
+
+Paid Amount: ₹[Paid Amount]
+
+Pending Amount: ₹[Pending Amount]
+
+आपले बिल PDF सोबत जोडले आहे.
+
+काही शंका असल्यास संपर्क साधा.
+
+धन्यवाद!
+[Shop Name]
+
+Open the native Android share interface with the generated invoice PDF and prefilled message where supported.
+
+The owner will select WhatsApp and send it manually.
+
+Important:
+
+- SMS must not contain an attachment.
+- WhatsApp message must include the PDF attachment.
+- Never claim a message was delivered.
+- Never mark a message as sent just because the share interface opened.
+- Handle missing or invalid customer mobile numbers gracefully.
+
+Also provide a separate Payment Received notification.
+
+## 11. Daily Work Register
+
+Create a daily work register.
+
+The owner should be able to record everything happening in the shop each day.
+
+Include:
+
+- Date
+- Customer Name
+- Job Number
+- Motor Details
+- Work Performed
+- Parts Used
+- Labour Charges
+- Payment Received
+- Pending Amount
+- Work Status
+- Notes
+
+Provide filters:
+
+- Today
+- Yesterday
+- This Week
+- This Month
+- Custom Date Range
+
+Allow editing past work records while maintaining an audit history.
+
+## 12. Reports
+
+Create reports for:
+
+- Daily Income
+- Monthly Income
+- Total Sales
+- Repairing Income
+- Spare Parts Sales
+- Motor Pump Sales
+- Total Expenses (if expense module is enabled)
+- Customer Pending Payments
+- Payment Collection
+- Product Stock
+- Product Profit
+- Completed Jobs
+- Pending Jobs
+
+All reports should be calculated from database transactions.
+
+Allow PDF export and CSV export.
+
+## 13. Business Settings
+
+Create a settings module.
+
+Fields:
+
+- Shop Name
+- Owner Name
+- Shop Address
+- Mobile Number
+- Alternate Mobile
+- GSTIN (optional)
+- Invoice Prefix
+- Default Tax Rate
+- Currency (INR)
+- Default Language
+- PDF Footer
+- Warranty Terms
+- Payment Instructions
+- Backup Settings
+
+Allow the owner to customize invoice information.
+
+## 14. Google Drive Backup & Restore
+
+This is a critical requirement.
+
+All primary data must remain in local SQLite storage.
+
+Integrate Google Drive using the official Google Drive API.
+
+Use the Google Drive appDataFolder or another appropriate private application backup location.
+
+Requirements:
+
+1. Allow the owner to sign in with his Google account.
+2. Save backup files in the application's private Drive backup location.
+3. Automatically schedule backup after 10:00 PM every day.
+4. Use Android WorkManager.
+5. Require internet connectivity for backup.
+6. If the phone is offline, retry the backup when connectivity becomes available.
+7. Never interrupt shop operations during backup.
+8. Maintain the latest successful backup timestamp.
+9. Display backup status on the dashboard.
+10. Provide a manual Backup Now option.
+11. Provide a Restore Data option.
+12. Keep previous backup versions, with a configurable retention limit.
+13. Never overwrite the local database during restore without explicit confirmation.
+14. Validate backup integrity before restoring.
+15. Ensure backup is consistent, even if the database changes during backup.
+
+Backup contents:
+
+- Complete SQLite database
+- Customer records
+- Repair job records
+- Bills
+- Payments
+- Inventory
+- Stock transactions
+- Settings
+- Daily work records
+- Necessary PDF documents, if stored locally
+
+Use an encrypted backup archive.
+
+Protect encryption keys appropriately. Never hardcode secrets or API keys in the source code.
+
+Important Google Drive restrictions:
+
+- Do not require Google Play Store publication.
+- Support development installation through APK.
+- Document Google Cloud Console OAuth configuration.
+- Use the minimum required Google Drive permission scopes.
+- Explain any OAuth verification or testing-mode restrictions.
+- Do not claim that a backup succeeded until the uploaded file has been verified.
+
+The backup must be incremental where practical, but a reliable complete backup is more important than premature optimization.
+
+## 15. Database Design
+
+Design normalized SQLite tables.
+
+At minimum create:
+
+1. customers
+2. repair_jobs
+3. repair_job_parts
+4. invoices
+5. invoice_items
+6. payments
+7. products
+8. product_categories
+9. stock_movements
+10. daily_work_logs
+11. business_settings
+12. backup_history
+13. job_status_history
+14. expenses (optional module)
+15. audit_logs
+
+Use:
+
+- Primary keys
+- Foreign keys
+- Database indexes
+- Appropriate constraints
+- Transactions for financial operations
+- Database migrations
+
+Never store calculated outstanding balances as independent values if they can be derived reliably from payment transactions.
+
+Prevent duplicate payments and duplicate invoice creation.
+
+Use soft deletion where financial history is involved.
+
+## 16. Application UI/UX
+
+Design for a non-technical shop owner.
+
+Requirements:
+
+- Simple home dashboard.
+- Large buttons.
+- Readable Marathi fonts.
+- Minimal typing.
+- Easy navigation.
+- Search functionality.
+- Clear payment status indicators.
+- Confirmation before destructive operations.
+- Consistent UI.
+- Support Android back navigation.
+- Light and dark themes.
+- Responsive layouts for different mobile screen sizes.
+
+Use a bottom navigation bar:
+
+1. Home
+2. Customers
+3. Jobs
+4. Billing
+5. More
+
+Place Inventory, Reports, Backup and Settings under More.
+
+## 17. Security & Reliability
+
+- No mandatory internet connection for regular operations.
+- Store all records locally.
+- Validate all inputs.
+- Use database transactions for payments, billing and stock changes.
+- Do not expose sensitive information in logs.
+- Protect Google authentication tokens.
+- Provide a secure backup and restore workflow.
+- Handle application crashes without corrupting the database.
+- Handle missing permissions and unavailable applications gracefully.
+
+## 18. Testing Requirements
+
+Implement and test the following scenarios:
+
+1. Add a customer.
+2. Create a repair job.
+3. Update job status.
+4. Add parts to a repair job.
+5. Generate a repair invoice.
+6. Record partial payment.
+7. Record multiple payments.
+8. Verify outstanding balance.
+9. Sell a motor pump.
+10. Sell spare parts.
+11. Verify inventory reduction.
+12. Send SMS using the native messaging application.
+13. Share an invoice PDF through WhatsApp.
+14. Run manual Google Drive backup.
+15. Restore from Google Drive.
+16. Verify all records after restoration.
+17. Use the application without internet.
+18. Test database migrations.
+19. Test invoice number uniqueness.
+20. Test daily and monthly financial reports.
+
+Do not mark any feature complete without testing it.
+
+## 19. Development Instructions
+
+Develop this application in milestones.
+
+Do not attempt to generate the entire application in one response.
+
+Milestone 1: Project setup, Flutter architecture, SQLite database and migrations.
+
+Milestone 2: Business settings, customer management and dashboard.
+
+Milestone 3: Motor repair jobs and daily work register.
+
+Milestone 4: Billing, PDF invoices and payment management.
+
+Milestone 5: Motor pump sales, spare parts inventory and stock management.
+
+Milestone 6: SMS and WhatsApp sharing.
+
+Milestone 7: Reports and analytics.
+
+Milestone 8: Google Drive authentication, backup and restore.
+
+Milestone 9: Testing, bug fixing, performance and APK generation.
+
+At the end of every milestone:
+
+- Explain what has been implemented.
+- List all created and modified files.
+- Provide complete code.
+- Run available tests.
+- Fix compilation errors.
+- Explain how to run the application.
+- Identify any manual configuration required.
+
+Do not leave TODO placeholders for essential functionality.
+
+Do not provide pseudocode instead of working code.
+
+Do not remove existing working functionality when implementing a new feature.
+
+Before implementing each milestone, inspect the existing project structure.
+
+If a requirement is technically impossible under the free/offline constraints, explain the limitation and propose the closest free alternative.
+
+## 20. Final Deliverable
+
+The final application must be:
+
+- Fully functional.
+- Android compatible.
+- Offline-first.
+- Local database driven.
+- Marathi-English friendly.
+- Capable of generating PDF bills.
+- Capable of tracking customer outstanding payments.
+- Capable of managing motor repair work.
+- Capable of managing motor pump and spare parts inventory.
+- Capable of preparing SMS and WhatsApp messages.
+- Capable of automatic Google Drive backup after 10 PM.
+- Capable of restoring data.
+- Installable using a locally generated APK.
+
+The entire project must be developed using free tools and free services.
+
+Start by inspecting the development environment and creating the Flutter project structure. Then implement Milestone 1.
+
+Do not skip architectural planning or database design.
