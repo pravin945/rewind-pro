@@ -145,6 +145,13 @@ class DashboardScreen extends ConsumerWidget {
           ],
         ),
         actions: [
+          IconButton(
+            icon: Icon(
+              ref.watch(themeModeProvider) == ThemeMode.dark ? Icons.light_mode : Icons.dark_mode,
+            ),
+            tooltip: 'लाइट / डार्क थीम बदला (Switch Theme)',
+            onPressed: () => ref.read(themeModeProvider.notifier).toggleTheme(),
+          ),
           PopupMenuButton<DashboardDateFilter>(
             icon: const Icon(Icons.filter_list),
             tooltip: strings.filter,
@@ -173,220 +180,284 @@ class DashboardScreen extends ConsumerWidget {
       body: RefreshIndicator(
         onRefresh: () async => ref.invalidate(dashboardSummaryProvider),
         child: ListView(
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.all(14),
           children: [
-            // Filter banner with tap-to-change
-            InkWell(
-              borderRadius: BorderRadius.circular(8),
-              onTap: () => _handleFilterSelection(context, ref, DashboardDateFilter.custom),
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-                margin: const EdgeInsets.only(bottom: 12),
-                decoration: BoxDecoration(
-                  color: AppTheme.primaryLight.withOpacity(0.1),
-                  borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppTheme.primaryLight.withOpacity(0.25)),
-                ),
-                child: Row(
-                  children: [
-                    Icon(Icons.calendar_today, size: 16, color: AppTheme.adaptivePrimary(context)),
-                    const SizedBox(width: 8),
-                    Expanded(
-                      child: Text(
-                        filterBannerText,
-                        style: TextStyle(fontWeight: FontWeight.w600, color: AppTheme.adaptivePrimary(context)),
+            // Compact Top Strip: Date Filter + Backup Pill
+            Row(
+              children: [
+                Expanded(
+                  child: InkWell(
+                    borderRadius: BorderRadius.circular(10),
+                    onTap: () => _handleFilterSelection(context, ref, DashboardDateFilter.custom),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 9),
+                      decoration: BoxDecoration(
+                        color: AppTheme.primaryLight.withOpacity(0.1),
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(color: AppTheme.primaryLight.withOpacity(0.25)),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(Icons.calendar_today, size: 15, color: AppTheme.adaptivePrimary(context)),
+                          const SizedBox(width: 6),
+                          Expanded(
+                            child: Text(
+                              filterBannerText,
+                              style: TextStyle(fontSize: 12, fontWeight: FontWeight.w600, color: AppTheme.adaptivePrimary(context)),
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                          Icon(Icons.arrow_drop_down, size: 18, color: AppTheme.adaptivePrimary(context)),
+                        ],
                       ),
                     ),
-                    Icon(Icons.arrow_drop_down, color: AppTheme.adaptivePrimary(context)),
-                  ],
-                ),
-              ),
-            ),
-
-            // Last Backup Badge Card
-            Card(
-              margin: const EdgeInsets.only(bottom: 14),
-              child: InkWell(
-                borderRadius: BorderRadius.circular(12),
-                onTap: () => context.push('/more/backup'),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-                  child: Row(
-                    children: [
-                      Icon(
-                        backupTime != null
-                            ? (isBackupSuccess ? Icons.cloud_done : Icons.cloud_sync)
-                            : Icons.cloud_off,
-                        color: backupTime != null
-                            ? (isBackupSuccess ? AppTheme.successGreen : AppTheme.warningAmber)
-                            : Colors.grey,
-                        size: 22,
-                      ),
-                      const SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              strings.lastBackup,
-                              style: const TextStyle(fontSize: 11, color: Colors.grey, fontWeight: FontWeight.w600),
-                            ),
-                            Text(
-                              backupTime != null
-                                  ? '${Formatters.dateTime(backupTime)} (${isBackupSuccess ? "सुरक्षित" : "प्रलंबित"})'
-                                  : strings.noBackupYet,
-                              style: TextStyle(
-                                fontSize: 13,
-                                fontWeight: FontWeight.bold,
-                                color: backupTime != null
-                                    ? (isBackupSuccess ? AppTheme.successGreen : AppTheme.warningAmber)
-                                    : Colors.grey.shade700,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const Icon(Icons.chevron_right, size: 18, color: Colors.grey),
-                    ],
                   ),
                 ),
-              ),
+                const SizedBox(width: 8),
+                InkWell(
+                  borderRadius: BorderRadius.circular(10),
+                  onTap: () => context.push('/more/backup'),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 9),
+                    decoration: BoxDecoration(
+                      color: (backupTime != null && isBackupSuccess)
+                          ? AppTheme.successGreen.withOpacity(0.12)
+                          : Colors.grey.withOpacity(0.12),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: (backupTime != null && isBackupSuccess)
+                            ? AppTheme.successGreen.withOpacity(0.35)
+                            : Colors.grey.withOpacity(0.3),
+                      ),
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Icon(
+                          backupTime != null
+                              ? (isBackupSuccess ? Icons.cloud_done : Icons.cloud_sync)
+                              : Icons.cloud_off,
+                          size: 16,
+                          color: backupTime != null
+                              ? (isBackupSuccess ? AppTheme.successGreen : AppTheme.warningAmber)
+                              : Colors.grey,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          backupTime != null ? 'बॅकअप ✓' : 'बॅकअप',
+                          style: TextStyle(
+                            fontSize: 12,
+                            fontWeight: FontWeight.bold,
+                            color: (backupTime != null && isBackupSuccess) ? AppTheme.successGreen : Colors.grey,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
+            const SizedBox(height: 16),
 
-            // Financial Summary Cards
+            // Quick Actions Section (Top Priority for Shopkeeper)
+            Text(
+              strings.quickActions,
+              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 10),
+
+            GridView.count(
+              crossAxisCount: 2,
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+              childAspectRatio: 2.5,
+              children: [
+                _QuickActionButton(
+                  icon: Icons.person_add,
+                  label: strings.addCustomer,
+                  color: AppTheme.adaptivePrimary(context),
+                  onTap: () => context.push('/customers/add'),
+                ),
+                _QuickActionButton(
+                  icon: Icons.build_circle,
+                  label: strings.newRepairJob,
+                  color: AppTheme.accentOrange,
+                  onTap: () => context.push('/jobs/add'),
+                ),
+                _QuickActionButton(
+                  icon: Icons.receipt_long,
+                  label: strings.createBill,
+                  color: Colors.teal,
+                  onTap: () => context.push('/billing/new?category=repair'),
+                ),
+                _QuickActionButton(
+                  icon: Icons.payment,
+                  label: strings.receivePayment,
+                  color: AppTheme.successGreen,
+                  onTap: () => context.push('/more/pending-payments'),
+                ),
+                _QuickActionButton(
+                  icon: Icons.history_edu,
+                  label: strings.dailyWork,
+                  color: Colors.indigoAccent,
+                  onTap: () => context.push('/more/daily-work'),
+                ),
+                _QuickActionButton(
+                  icon: Icons.money_off,
+                  label: 'दुकान खर्च (Expenses)',
+                  color: Colors.deepOrange,
+                  onTap: () => context.push('/more/expenses'),
+                ),
+              ],
+            ),
+            const SizedBox(height: 16),
+
+            // Simplified Financial & Jobs Summary
             summaryAsync.when(
               data: (data) => Column(
                 children: [
-                  // Row 1: Total Billed & Received Payment
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _StatCard(
-                          title: strings.todayTotalIncome,
-                          amount: Formatters.currency(data.totalIncome),
-                          icon: Icons.payments,
-                          color: AppTheme.primaryBlue,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _StatCard(
-                          title: strings.todayReceived,
-                          amount: Formatters.currency(data.receivedPayment),
-                          icon: Icons.check_circle,
-                          color: AppTheme.successGreen,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-
-                  // Row 2: Today Pending & Total Customer Pending
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _StatCard(
-                          title: strings.todayPending,
-                          amount: Formatters.currency(data.pendingPayment),
-                          icon: Icons.pending_actions,
-                          color: AppTheme.warningAmber,
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _StatCard(
-                          title: strings.totalPendingPayments,
-                          amount: Formatters.currency(data.totalPendingCustomerPayments),
-                          icon: Icons.account_balance_wallet,
-                          color: AppTheme.errorRed,
-                          onTap: () => context.push('/more/pending-payments'),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 12),
-
-                  // Row 3: Today's Expenses & Low stock materials
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _StatCard(
-                          title: 'आजचा खर्च (Expenses)',
-                          amount: Formatters.currency(data.todaySalesAmount > 0 ? data.todaySalesAmount : 0), // Linked to expenses
-                          icon: Icons.money_off,
-                          color: AppTheme.errorRed,
-                          onTap: () => context.push('/more/expenses'),
-                        ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _StatCard(
-                          title: 'कमी साहित्य स्टॉक',
-                          amount: '${data.lowStockProductsCount} साहित्य',
-                          icon: Icons.inventory_2,
-                          color: data.lowStockProductsCount > 0 ? AppTheme.accentOrange : Colors.grey.shade700,
-                          onTap: () => context.push('/more/inventory?lowStock=true'),
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-
-                  // Job Counts Overview
+                  // Unified Financial Card
                   Card(
                     child: Padding(
-                      padding: const EdgeInsets.all(16),
+                      padding: const EdgeInsets.all(14),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                strings.navJobs,
-                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-                              ),
-                              TextButton(
-                                onPressed: () => context.go('/jobs'),
-                                child: const Text('सर्व कामे पहा >'),
+                              const Text('हिशोब गोषवारा (Summary)', style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold)),
+                              InkWell(
+                                borderRadius: BorderRadius.circular(8),
+                                onTap: () => context.push('/more/pending-payments'),
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                                  decoration: BoxDecoration(
+                                    color: AppTheme.errorRed.withOpacity(0.12),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Text(
+                                    'एकूण बाकी: ${Formatters.currency(data.totalPendingCustomerPayments)}',
+                                    style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: AppTheme.errorRed),
+                                  ),
+                                ),
                               ),
                             ],
                           ),
-                          const Divider(),
-                          const SizedBox(height: 8),
+                          const Divider(height: 18),
                           Row(
                             children: [
                               Expanded(
-                                child: _JobCountItem(
-                                  label: strings.todayNewJobs,
-                                  count: data.newJobsToday,
-                                  color: AppTheme.primaryLight,
+                                child: _MetricColumn(
+                                  label: 'कमाई (Billed)',
+                                  value: Formatters.currency(data.totalIncome),
+                                  color: AppTheme.adaptivePrimary(context),
                                 ),
                               ),
                               Expanded(
-                                child: _JobCountItem(
-                                  label: strings.inProgressJobs,
-                                  count: data.activeJobsCount,
-                                  color: AppTheme.warningAmber,
-                                ),
-                              ),
-                              Expanded(
-                                child: _JobCountItem(
-                                  label: strings.completedJobs,
-                                  count: data.completedJobsCount,
+                                child: _MetricColumn(
+                                  label: 'जमा (Received)',
+                                  value: Formatters.currency(data.receivedPayment),
                                   color: AppTheme.successGreen,
                                 ),
                               ),
                               Expanded(
-                                child: _JobCountItem(
-                                  label: strings.deliveredJobs,
-                                  count: data.deliveredJobsCount,
-                                  color: Colors.blueGrey,
+                                child: _MetricColumn(
+                                  label: 'बाकी (Pending)',
+                                  value: Formatters.currency(data.pendingPayment),
+                                  color: AppTheme.warningAmber,
+                                ),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          Row(
+                            children: [
+                              Expanded(
+                                child: _CompactChipCard(
+                                  icon: Icons.money_off,
+                                  label: 'खर्च: ${Formatters.currency(data.todaySalesAmount > 0 ? data.todaySalesAmount : 0)}',
+                                  color: AppTheme.errorRed,
+                                  onTap: () => context.push('/more/expenses'),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
+                              Expanded(
+                                child: _CompactChipCard(
+                                  icon: Icons.inventory_2,
+                                  label: 'कमी स्टॉक: ${data.lowStockProductsCount}',
+                                  color: data.lowStockProductsCount > 0 ? AppTheme.accentOrange : Colors.grey,
+                                  onTap: () => context.push('/more/inventory?lowStock=true'),
                                 ),
                               ),
                             ],
                           ),
                         ],
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+
+                  // Unified Jobs Overview Card
+                  Card(
+                    child: InkWell(
+                      borderRadius: BorderRadius.circular(12),
+                      onTap: () => context.go('/jobs'),
+                      child: Padding(
+                        padding: const EdgeInsets.all(14),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  'मोटर कामे (${strings.navJobs})',
+                                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  'सर्व पहा >',
+                                  style: TextStyle(fontSize: 13, fontWeight: FontWeight.w600, color: AppTheme.adaptivePrimary(context)),
+                                ),
+                              ],
+                            ),
+                            const Divider(height: 18),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: _JobCountItem(
+                                    label: 'नवीन',
+                                    count: data.newJobsToday,
+                                    color: AppTheme.primaryLight,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: _JobCountItem(
+                                    label: 'चालू',
+                                    count: data.activeJobsCount,
+                                    color: AppTheme.warningAmber,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: _JobCountItem(
+                                    label: 'पूर्ण',
+                                    count: data.completedJobsCount,
+                                    color: AppTheme.successGreen,
+                                  ),
+                                ),
+                                Expanded(
+                                  child: _JobCountItem(
+                                    label: 'दिलेले',
+                                    count: data.deliveredJobsCount,
+                                    color: Colors.blueGrey,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                   ),
@@ -401,62 +472,7 @@ class DashboardScreen extends ConsumerWidget {
                 child: Text('Error loading stats: $err', style: const TextStyle(color: Colors.red)),
               ),
             ),
-
-            const SizedBox(height: 20),
-
-            // Quick Actions Section
-            Text(
-              strings.quickActions,
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            const SizedBox(height: 12),
-
-            GridView.count(
-              crossAxisCount: 2,
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              mainAxisSpacing: 12,
-              crossAxisSpacing: 12,
-              childAspectRatio: 2.2,
-              children: [
-                _QuickActionButton(
-                  icon: Icons.person_add,
-                  label: strings.addCustomer,
-                  color: AppTheme.primaryBlue,
-                  onTap: () => context.push('/customers/add'),
-                ),
-                _QuickActionButton(
-                  icon: Icons.build_circle,
-                  label: strings.newRepairJob,
-                  color: AppTheme.accentOrange,
-                  onTap: () => context.push('/jobs/add'),
-                ),
-                _QuickActionButton(
-                  icon: Icons.receipt_long,
-                  label: strings.createBill,
-                  color: Colors.teal.shade700,
-                  onTap: () => context.push('/billing/new?category=repair'),
-                ),
-                _QuickActionButton(
-                  icon: Icons.payment,
-                  label: strings.receivePayment,
-                  color: AppTheme.successGreen,
-                  onTap: () => context.push('/more/pending-payments'),
-                ),
-                _QuickActionButton(
-                  icon: Icons.history_edu,
-                  label: strings.dailyWork,
-                  color: Colors.indigo.shade600,
-                  onTap: () => context.push('/more/daily-work'),
-                ),
-                _QuickActionButton(
-                  icon: Icons.money_off,
-                  label: 'दुकान खर्च (Expenses)',
-                  color: Colors.deepOrange.shade700,
-                  onTap: () => context.push('/more/expenses'),
-                ),
-              ],
-            ),
+            const SizedBox(height: 16),
           ],
         ),
       ),
@@ -464,63 +480,68 @@ class DashboardScreen extends ConsumerWidget {
   }
 }
 
-class _StatCard extends StatelessWidget {
-  final String title;
-  final String amount;
-  final IconData icon;
+class _MetricColumn extends StatelessWidget {
+  final String label;
+  final String value;
   final Color color;
-  final VoidCallback? onTap;
 
-  const _StatCard({
-    required this.title,
-    required this.amount,
+  const _MetricColumn({required this.label, required this.value, required this.color});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Text(
+          value,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: color),
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
+        const SizedBox(height: 2),
+        Text(label, style: const TextStyle(fontSize: 11, color: Colors.grey), textAlign: TextAlign.center),
+      ],
+    );
+  }
+}
+
+class _CompactChipCard extends StatelessWidget {
+  final IconData icon;
+  final String label;
+  final Color color;
+  final VoidCallback onTap;
+
+  const _CompactChipCard({
     required this.icon,
+    required this.label,
     required this.color,
-    this.onTap,
+    required this.onTap,
   });
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      clipBehavior: Clip.antiAlias,
-      child: InkWell(
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.all(14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Expanded(
-                    child: Text(
-                      title,
-                      style: TextStyle(
-                        fontSize: 12,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.grey.shade700,
-                      ),
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                    ),
-                  ),
-                  Icon(icon, size: 20, color: color),
-                ],
-              ),
-              const SizedBox(height: 8),
-              Text(
-                amount,
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                  color: color,
-                ),
-                maxLines: 1,
+    return InkWell(
+      borderRadius: BorderRadius.circular(8),
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        decoration: BoxDecoration(
+          color: color.withOpacity(0.1),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(color: color.withOpacity(0.25)),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 16, color: color),
+            const SizedBox(width: 6),
+            Flexible(
+              child: Text(
+                label,
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold, color: color),
                 overflow: TextOverflow.ellipsis,
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

@@ -113,10 +113,30 @@ class MoreScreen extends ConsumerWidget {
 
           _MenuTile(
             icon: Icons.settings,
-            iconColor: Colors.grey.shade800,
+            iconColor: Colors.grey.shade700,
             title: strings.settings,
             subtitle: 'दुकान नाव, पत्ता, बिलिंग व भाषा सेटिंग्ज',
             onTap: () => context.push('/more/settings'),
+          ),
+
+          SwitchListTile(
+            secondary: CircleAvatar(
+              backgroundColor: AppTheme.primaryLight.withOpacity(0.12),
+              child: Icon(
+                ref.watch(themeModeProvider) == ThemeMode.dark ? Icons.dark_mode : Icons.light_mode,
+                color: AppTheme.adaptivePrimary(context),
+                size: 20,
+              ),
+            ),
+            title: const Text('डार्क थीम (Dark Mode)', style: TextStyle(fontWeight: FontWeight.w600, fontSize: 15)),
+            subtitle: Text(
+              ref.watch(themeModeProvider) == ThemeMode.dark ? 'सध्या डार्क थीम चालू आहे' : 'सध्या लाइट थीम चालू आहे',
+              style: const TextStyle(fontSize: 12, color: Colors.grey),
+            ),
+            value: ref.watch(themeModeProvider) == ThemeMode.dark,
+            onChanged: (isDark) {
+              ref.read(themeModeProvider.notifier).setTheme(isDark ? ThemeMode.dark : ThemeMode.light);
+            },
           ),
 
           const SizedBox(height: 20),

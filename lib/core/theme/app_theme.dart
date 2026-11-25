@@ -1,7 +1,49 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:path/path.dart' as p;
+import 'package:path_provider/path_provider.dart';
 
-final themeModeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.system);
+class ThemeModeNotifier extends StateNotifier<ThemeMode> {
+  ThemeModeNotifier() : super(ThemeMode.light) {
+    _loadSavedTheme();
+  }
+
+  Future<void> _loadSavedTheme() async {
+    try {
+      final dir = await getApplicationDocumentsDirectory();
+      final file = File(p.join(dir.path, 'theme_mode.txt'));
+      if (await file.exists()) {
+        final content = (await file.readAsString()).trim();
+        if (content == 'dark') {
+          state = ThemeMode.dark;
+        } else if (content == 'light') {
+          state = ThemeMode.light;
+        }
+      }
+    } catch (_) {
+      // Ignore in test environments without path_provider
+    }
+  }
+
+  Future<void> setTheme(ThemeMode mode) async {
+    final target = mode == ThemeMode.dark ? ThemeMode.dark : ThemeMode.light;
+    state = target;
+    try {
+      final dir = await getApplicationDocumentsDirectory();
+      final file = File(p.join(dir.path, 'theme_mode.txt'));
+      await file.writeAsString(target == ThemeMode.dark ? 'dark' : 'light');
+    } catch (_) {}
+  }
+
+  Future<void> toggleTheme() async {
+    await setTheme(state == ThemeMode.dark ? ThemeMode.light : ThemeMode.dark);
+  }
+}
+
+final themeModeProvider = StateNotifierProvider<ThemeModeNotifier, ThemeMode>((ref) {
+  return ThemeModeNotifier();
+});
 
 class AppTheme {
   // Brand colors suitable for industrial/motor repair: Strong Navy/Blue & Vibrant Orange/Amber accent

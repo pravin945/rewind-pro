@@ -49,25 +49,15 @@ class AppStrings {
       : 'रिवाइंड प्रो (RewindPro)';
 
   // Bottom Nav
-  String get navHome => lang == AppLanguage.english
-      ? 'Home'
-      : (lang == AppLanguage.marathi ? 'मुख्य' : 'Home / आजचा हिशोब');
+  String get navHome => lang == AppLanguage.english ? 'Home' : 'मुख्य';
 
-  String get navCustomers => lang == AppLanguage.english
-      ? 'Customers'
-      : (lang == AppLanguage.marathi ? 'ग्राहक' : 'Customers / ग्राहक');
+  String get navCustomers => lang == AppLanguage.english ? 'Customers' : 'ग्राहक';
 
-  String get navJobs => lang == AppLanguage.english
-      ? 'Jobs'
-      : (lang == AppLanguage.marathi ? 'कामे' : 'Jobs / रिपेअरिंग');
+  String get navJobs => lang == AppLanguage.english ? 'Jobs' : 'कामे';
 
-  String get navBilling => lang == AppLanguage.english
-      ? 'Billing'
-      : (lang == AppLanguage.marathi ? 'बिलिंग' : 'Billing / बिल');
+  String get navBilling => lang == AppLanguage.english ? 'Billing' : 'बिल';
 
-  String get navMore => lang == AppLanguage.english
-      ? 'More'
-      : (lang == AppLanguage.marathi ? 'अधिक' : 'More / इतर');
+  String get navMore => lang == AppLanguage.english ? 'More' : 'अधिक';
 
   // Dashboard Cards
   String get todayTotalIncome => lang == AppLanguage.english

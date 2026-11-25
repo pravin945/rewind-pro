@@ -289,18 +289,17 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             const SizedBox(height: 12),
 
             DropdownButtonFormField<ThemeMode>(
-              value: ref.watch(themeModeProvider),
+              value: ref.watch(themeModeProvider) == ThemeMode.dark ? ThemeMode.dark : ThemeMode.light,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.brightness_6),
               ),
               items: const [
-                DropdownMenuItem(value: ThemeMode.system, child: Text('फोननुसार (System Default)')),
                 DropdownMenuItem(value: ThemeMode.light, child: Text('लाइट थीम (Light Mode)')),
                 DropdownMenuItem(value: ThemeMode.dark, child: Text('डार्क थीम (Dark Mode)')),
               ],
               onChanged: (val) {
                 if (val != null) {
-                  ref.read(themeModeProvider.notifier).state = val;
+                  ref.read(themeModeProvider.notifier).setTheme(val);
                 }
               },
             ),

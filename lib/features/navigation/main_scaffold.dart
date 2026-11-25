@@ -17,38 +17,38 @@ class MainScaffold extends ConsumerWidget {
 
     return Scaffold(
       body: navigationShell,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: navigationShell.currentIndex,
-        onTap: (index) {
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: navigationShell.currentIndex,
+        onDestinationSelected: (index) {
           navigationShell.goBranch(
             index,
             initialLocation: index == navigationShell.currentIndex,
           );
         },
-        items: [
-          BottomNavigationBarItem(
+        destinations: [
+          NavigationDestination(
             icon: const Icon(Icons.dashboard_outlined),
-            activeIcon: const Icon(Icons.dashboard),
+            selectedIcon: const Icon(Icons.dashboard),
             label: strings.navHome,
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: const Icon(Icons.people_outline),
-            activeIcon: const Icon(Icons.people),
+            selectedIcon: const Icon(Icons.people),
             label: strings.navCustomers,
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: const Icon(Icons.build_circle_outlined),
-            activeIcon: const Icon(Icons.build_circle),
+            selectedIcon: const Icon(Icons.build_circle),
             label: strings.navJobs,
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: const Icon(Icons.receipt_long_outlined),
-            activeIcon: const Icon(Icons.receipt_long),
+            selectedIcon: const Icon(Icons.receipt_long),
             label: strings.navBilling,
           ),
-          BottomNavigationBarItem(
+          NavigationDestination(
             icon: const Icon(Icons.menu),
-            activeIcon: const Icon(Icons.menu_open),
+            selectedIcon: const Icon(Icons.menu_open),
             label: strings.navMore,
           ),
         ],
