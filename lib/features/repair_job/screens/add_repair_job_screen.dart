@@ -39,6 +39,7 @@ class _AddRepairJobScreenState extends ConsumerState<AddRepairJobScreen> {
   final _notesController = TextEditingController();
   final _warrantyController = TextEditingController(text: '१ महिना हमी');
 
+  DateTime _receivedDate = DateTime.now();
   DateTime? _expectedDelivery;
   bool _isLoading = false;
   bool _isEdit = false;
@@ -84,6 +85,7 @@ class _AddRepairJobScreenState extends ConsumerState<AddRepairJobScreen> {
       _advanceController.text = job.advancePayment.toStringAsFixed(0);
       _notesController.text = job.notes ?? '';
       _warrantyController.text = job.warrantyInfo ?? '१ महिना हमी';
+      _receivedDate = job.receivedDate;
       _expectedDelivery = job.expectedDeliveryDate;
       setState(() {});
     }
@@ -162,6 +164,7 @@ class _AddRepairJobScreenState extends ConsumerState<AddRepairJobScreen> {
             finalAmount: drift.Value(finalAmt),
             advancePayment: drift.Value(advance),
             remainingAmount: drift.Value(remaining),
+            receivedDate: drift.Value(_receivedDate),
             expectedDeliveryDate: drift.Value(_expectedDelivery),
             warrantyInfo: drift.Value(_warrantyController.text.trim().isEmpty ? null : _warrantyController.text.trim()),
             notes: drift.Value(_notesController.text.trim().isEmpty ? null : _notesController.text.trim()),
@@ -195,6 +198,7 @@ class _AddRepairJobScreenState extends ConsumerState<AddRepairJobScreen> {
             finalAmount: drift.Value(finalAmt),
             advancePayment: drift.Value(advance),
             remainingAmount: drift.Value(remaining),
+            receivedDate: drift.Value(_receivedDate),
             expectedDeliveryDate: drift.Value(_expectedDelivery),
             warrantyInfo: drift.Value(_warrantyController.text.trim().isEmpty ? null : _warrantyController.text.trim()),
             notes: drift.Value(_notesController.text.trim().isEmpty ? null : _notesController.text.trim()),
@@ -344,10 +348,34 @@ class _AddRepairJobScreenState extends ConsumerState<AddRepairJobScreen> {
             ),
             const SizedBox(height: 12),
 
+            // Received Date (allows previous dates)
+            ListTile(
+              contentPadding: EdgeInsets.zero,
+              leading: Icon(Icons.event_available, color: AppTheme.adaptivePrimary(context)),
+              title: const Text('मोटर जमा दिनांक (Received Date)'),
+              subtitle: Text(
+                '${_receivedDate.day}/${_receivedDate.month}/${_receivedDate.year}',
+                style: const TextStyle(fontWeight: FontWeight.bold),
+              ),
+              trailing: const Icon(Icons.edit_calendar),
+              onTap: () async {
+                final picked = await showDatePicker(
+                  context: context,
+                  initialDate: _receivedDate,
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime.now().add(const Duration(days: 365)),
+                );
+                if (picked != null) {
+                  setState(() => _receivedDate = picked);
+                }
+              },
+            ),
+            const SizedBox(height: 8),
+
             // Expected Delivery Date
             ListTile(
               contentPadding: EdgeInsets.zero,
-              leading: const Icon(Icons.calendar_today, color: AppTheme.primaryBlue),
+              leading: Icon(Icons.calendar_today, color: AppTheme.adaptivePrimary(context)),
               title: const Text('अपेक्षित देण्याची तारीख (Delivery Date)'),
               subtitle: Text(
                 _expectedDelivery != null ? '${_expectedDelivery!.day}/${_expectedDelivery!.month}/${_expectedDelivery!.year}' : 'तारीख निवडा',
@@ -358,8 +386,8 @@ class _AddRepairJobScreenState extends ConsumerState<AddRepairJobScreen> {
                 final picked = await showDatePicker(
                   context: context,
                   initialDate: _expectedDelivery ?? DateTime.now().add(const Duration(days: 2)),
-                  firstDate: DateTime.now().subtract(const Duration(days: 30)),
-                  lastDate: DateTime.now().add(const Duration(days: 90)),
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime(2100),
                 );
                 if (picked != null) {
                   setState(() => _expectedDelivery = picked);

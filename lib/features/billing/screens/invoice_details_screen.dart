@@ -94,6 +94,7 @@ ${inv.discount > 0 ? '• सवलत: - ${Formatters.currency(inv.discount)}\n
       text: invoice.pendingAmount > 0 ? invoice.pendingAmount.toStringAsFixed(0) : '0',
     );
     String mode = 'cash';
+    DateTime selectedDate = DateTime.now();
     final refController = TextEditingController();
     final notesController = TextEditingController();
 
@@ -110,7 +111,7 @@ ${inv.discount > 0 ? '• सवलत: - ${Formatters.currency(inv.discount)}\n
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.red.shade50,
+                    color: AppTheme.errorRed.withOpacity(0.12),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
@@ -161,6 +162,24 @@ ${inv.discount > 0 ? '• सवलत: - ${Formatters.currency(inv.discount)}\n
                   controller: notesController,
                   decoration: const InputDecoration(labelText: 'टीप / शेरा (Optional)'),
                 ),
+                const SizedBox(height: 8),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: const Text('पेमेंट दिनांक:', style: TextStyle(fontSize: 13)),
+                  subtitle: Text(Formatters.date(selectedDate), style: const TextStyle(fontWeight: FontWeight.bold)),
+                  trailing: Icon(Icons.calendar_month, color: AppTheme.adaptivePrimary(context)),
+                  onTap: () async {
+                    final picked = await showDatePicker(
+                      context: context,
+                      initialDate: selectedDate,
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime.now().add(const Duration(days: 30)),
+                    );
+                    if (picked != null) {
+                      setDialogState(() => selectedDate = picked);
+                    }
+                  },
+                ),
               ],
             ),
           ),
@@ -181,6 +200,7 @@ ${inv.discount > 0 ? '• सवलत: - ${Formatters.currency(inv.discount)}\n
                         customerId: invoice.customerId ?? 0,
                         invoiceId: drift.Value(invoice.id),
                         repairJobId: drift.Value(invoice.repairJobId),
+                        paymentDate: drift.Value(selectedDate),
                         amountReceived: amt,
                         paymentMode: drift.Value(mode),
                         transactionReference: drift.Value(refController.text.trim().isEmpty ? null : refController.text.trim()),

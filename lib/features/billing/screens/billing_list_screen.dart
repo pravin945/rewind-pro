@@ -132,7 +132,7 @@ class BillingListScreen extends ConsumerWidget {
                   children: [
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-                      color: Colors.blue.shade50.withOpacity(0.7),
+                      color: AppTheme.primaryLight.withOpacity(0.12),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -168,7 +168,7 @@ class BillingListScreen extends ConsumerWidget {
                                       children: [
                                         Text(
                                           inv.invoiceNumber,
-                                          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppTheme.primaryBlue),
+                                          style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16, color: AppTheme.adaptivePrimary(context)),
                                         ),
                                         Text(
                                           Formatters.date(inv.invoiceDate),
@@ -207,9 +207,9 @@ class BillingListScreen extends ConsumerWidget {
                                           Container(
                                             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                                             decoration: BoxDecoration(
-                                              color: Colors.red.shade50,
+                                              color: AppTheme.errorRed.withOpacity(0.12),
                                               borderRadius: BorderRadius.circular(8),
-                                              border: Border.all(color: Colors.red.shade200),
+                                              border: Border.all(color: AppTheme.errorRed.withOpacity(0.35)),
                                             ),
                                             child: Text(
                                               'बाकी: ${Formatters.currency(inv.pendingAmount)}',
@@ -220,9 +220,9 @@ class BillingListScreen extends ConsumerWidget {
                                           Container(
                                             padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                                             decoration: BoxDecoration(
-                                              color: Colors.green.shade50,
+                                              color: AppTheme.successGreen.withOpacity(0.12),
                                               borderRadius: BorderRadius.circular(8),
-                                              border: Border.all(color: Colors.green.shade200),
+                                              border: Border.all(color: AppTheme.successGreen.withOpacity(0.35)),
                                             ),
                                             child: const Text(
                                               'पूर्ण भरले (Paid)',

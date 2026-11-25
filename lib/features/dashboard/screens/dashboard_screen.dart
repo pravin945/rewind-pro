@@ -183,21 +183,21 @@ class DashboardScreen extends ConsumerWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                 margin: const EdgeInsets.only(bottom: 12),
                 decoration: BoxDecoration(
-                  color: AppTheme.primaryBlue.withOpacity(0.08),
+                  color: AppTheme.primaryLight.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(8),
-                  border: Border.all(color: AppTheme.primaryBlue.withOpacity(0.2)),
+                  border: Border.all(color: AppTheme.primaryLight.withOpacity(0.25)),
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.calendar_today, size: 16, color: AppTheme.primaryBlue),
+                    Icon(Icons.calendar_today, size: 16, color: AppTheme.adaptivePrimary(context)),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
                         filterBannerText,
-                        style: const TextStyle(fontWeight: FontWeight.w600, color: AppTheme.primaryBlue),
+                        style: TextStyle(fontWeight: FontWeight.w600, color: AppTheme.adaptivePrimary(context)),
                       ),
                     ),
-                    const Icon(Icons.arrow_drop_down, color: AppTheme.primaryBlue),
+                    Icon(Icons.arrow_drop_down, color: AppTheme.adaptivePrimary(context)),
                   ],
                 ),
               ),

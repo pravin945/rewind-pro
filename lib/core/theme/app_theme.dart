@@ -1,14 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final themeModeProvider = StateProvider<ThemeMode>((ref) => ThemeMode.system);
 
 class AppTheme {
   // Brand colors suitable for industrial/motor repair: Strong Navy/Blue & Vibrant Orange/Amber accent
   static const Color primaryBlue = Color(0xFF1E3A8A); // Deep industrial blue
   static const Color primaryLight = Color(0xFF3B82F6);
+  static const Color primaryDarkText = Color(0xFF60A5FA); // High-contrast blue for dark backgrounds
   static const Color accentOrange = Color(0xFFEA580C); // Warm motor copper/orange
   static const Color successGreen = Color(0xFF16A34A);
   static const Color whatsappGreen = Color(0xFF25D366); // WhatsApp brand green
   static const Color warningAmber = Color(0xFFD97706);
   static const Color errorRed = Color(0xFFDC2626);
+
+  static Color adaptivePrimary(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark ? primaryDarkText : primaryBlue;
+  }
+
+  static bool isDark(BuildContext context) {
+    return Theme.of(context).brightness == Brightness.dark;
+  }
 
   static ThemeData get lightTheme {
     return ThemeData(
@@ -170,6 +182,40 @@ class AppTheme {
           borderRadius: BorderRadius.circular(10),
           borderSide: const BorderSide(color: primaryLight, width: 2),
         ),
+        errorBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(10),
+          borderSide: const BorderSide(color: errorRed),
+        ),
+        labelStyle: const TextStyle(color: Color(0xFF94A3B8)),
+        hintStyle: const TextStyle(color: Color(0xFF64748B)),
+      ),
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          foregroundColor: primaryDarkText,
+          side: const BorderSide(color: primaryDarkText, width: 1.5),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          textStyle: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+      floatingActionButtonTheme: const FloatingActionButtonThemeData(
+        backgroundColor: primaryLight,
+        foregroundColor: Colors.white,
+      ),
+      dialogTheme: DialogThemeData(
+        backgroundColor: const Color(0xFF1E293B),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      ),
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: Color(0xFF1E293B),
+      ),
+      dividerTheme: const DividerThemeData(
+        color: Color(0xFF334155),
       ),
       bottomNavigationBarTheme: const BottomNavigationBarThemeData(
         backgroundColor: Color(0xFF1E293B),

@@ -176,38 +176,34 @@ class _StatusBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color bg;
-    Color fg;
+    final isDark = AppTheme.isDark(context);
+    Color baseColor;
 
     switch (status) {
       case 'received':
-        bg = Colors.blue.shade50;
-        fg = Colors.blue.shade800;
+        baseColor = isDark ? Colors.lightBlueAccent : Colors.blue.shade800;
         break;
       case 'inspection':
-        bg = Colors.amber.shade50;
-        fg = Colors.amber.shade800;
+        baseColor = isDark ? Colors.amberAccent : Colors.amber.shade800;
         break;
       case 'inProgress':
-        bg = Colors.orange.shade50;
-        fg = Colors.orange.shade800;
+        baseColor = isDark ? Colors.orangeAccent : Colors.orange.shade800;
         break;
       case 'waitingForParts':
-        bg = Colors.purple.shade50;
-        fg = Colors.purple.shade800;
+        baseColor = isDark ? Colors.purpleAccent : Colors.purple.shade800;
         break;
       case 'completed':
-        bg = Colors.green.shade50;
-        fg = Colors.green.shade800;
+        baseColor = isDark ? Colors.greenAccent : Colors.green.shade800;
         break;
       case 'delivered':
-        bg = Colors.grey.shade100;
-        fg = Colors.grey.shade800;
+        baseColor = isDark ? Colors.grey.shade400 : Colors.grey.shade800;
         break;
       default:
-        bg = Colors.grey.shade100;
-        fg = Colors.grey.shade800;
+        baseColor = isDark ? Colors.grey.shade400 : Colors.grey.shade800;
     }
+
+    final bg = baseColor.withOpacity(0.14);
+    final fg = baseColor;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),

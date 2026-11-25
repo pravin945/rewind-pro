@@ -5,6 +5,8 @@ import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/database/app_database.dart';
 import '../../../core/providers/database_providers.dart';
+import '../../../core/theme/app_theme.dart';
+import '../../../core/utils/formatters.dart';
 
 class AddEditCustomerScreen extends ConsumerStatefulWidget {
   final int? customerId;
@@ -24,6 +26,7 @@ class _AddEditCustomerScreenState extends ConsumerState<AddEditCustomerScreen> {
   final _villageCityController = TextEditingController();
   final _notesController = TextEditingController();
 
+  DateTime _registrationDate = DateTime.now();
   bool _isLoading = false;
   bool _isEdit = false;
 
@@ -45,6 +48,8 @@ class _AddEditCustomerScreenState extends ConsumerState<AddEditCustomerScreen> {
       _addressController.text = customer.address ?? '';
       _villageCityController.text = customer.villageCity ?? '';
       _notesController.text = customer.notes ?? '';
+      _registrationDate = customer.createdAt;
+      setState(() {});
     }
   }
 
@@ -117,6 +122,7 @@ class _AddEditCustomerScreenState extends ConsumerState<AddEditCustomerScreen> {
             address: drift.Value(_addressController.text.trim().isEmpty ? null : _addressController.text.trim()),
             villageCity: drift.Value(_villageCityController.text.trim().isEmpty ? null : _villageCityController.text.trim()),
             notes: drift.Value(_notesController.text.trim().isEmpty ? null : _notesController.text.trim()),
+            createdAt: drift.Value(_registrationDate),
           ),
         );
       } else {
@@ -128,6 +134,7 @@ class _AddEditCustomerScreenState extends ConsumerState<AddEditCustomerScreen> {
             address: drift.Value(_addressController.text.trim().isEmpty ? null : _addressController.text.trim()),
             villageCity: drift.Value(_villageCityController.text.trim().isEmpty ? null : _villageCityController.text.trim()),
             notes: drift.Value(_notesController.text.trim().isEmpty ? null : _notesController.text.trim()),
+            createdAt: drift.Value(_registrationDate),
           ),
         );
       }
@@ -242,6 +249,34 @@ class _AddEditCustomerScreenState extends ConsumerState<AddEditCustomerScreen> {
                 prefixIcon: const Icon(Icons.note),
                 hintText: 'इतर विशेष टीप (Optional)',
               ),
+            ),
+            const SizedBox(height: 16),
+
+            // Registration Date (supports previous dates)
+            ListTile(
+              contentPadding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+                side: BorderSide(color: Theme.of(context).dividerColor),
+              ),
+              leading: Icon(Icons.calendar_today, color: AppTheme.adaptivePrimary(context)),
+              title: const Text('नोंदणी दिनांक (Registration Date)', style: TextStyle(fontSize: 13)),
+              subtitle: Text(
+                Formatters.date(_registrationDate),
+                style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+              ),
+              trailing: const Icon(Icons.edit_calendar),
+              onTap: () async {
+                final picked = await showDatePicker(
+                  context: context,
+                  initialDate: _registrationDate,
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime.now().add(const Duration(days: 365)),
+                );
+                if (picked != null) {
+                  setState(() => _registrationDate = picked);
+                }
+              },
             ),
             const SizedBox(height: 24),
 

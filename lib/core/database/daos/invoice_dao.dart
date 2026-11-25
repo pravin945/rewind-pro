@@ -215,6 +215,7 @@ class InvoiceDao {
                 customerId: custId,
                 invoiceId: Value(invoiceId),
                 repairJobId: invoice.repairJobId,
+                paymentDate: invoice.invoiceDate.present ? invoice.invoiceDate : Value(DateTime.now()),
                 amountReceived: initialPayment,
                 paymentMode: Value(paymentMode),
                 transactionReference: Value(paymentRef),

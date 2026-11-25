@@ -75,7 +75,7 @@ class DailyWorkScreen extends ConsumerWidget {
 
       final picked = await showDateRangePicker(
         context: context,
-        firstDate: DateTime(2020),
+        firstDate: DateTime(2000),
         lastDate: DateTime.now().add(const Duration(days: 365)),
         initialDateRange: initial,
         helpText: 'कालावधी निवडा (Select Date Range)',
@@ -141,7 +141,7 @@ class DailyWorkScreen extends ConsumerWidget {
                       final picked = await showDatePicker(
                         context: context,
                         initialDate: logDate,
-                        firstDate: DateTime(2020),
+                        firstDate: DateTime(2000),
                         lastDate: DateTime.now().add(const Duration(days: 30)),
                       );
                       if (picked != null) {
@@ -408,19 +408,19 @@ class DailyWorkScreen extends ConsumerWidget {
           InkWell(
             onTap: () => _handleFilterSelection(context, ref, DailyWorkFilter.custom),
             child: Container(
-              color: Colors.blue.shade50,
+              color: AppTheme.primaryLight.withOpacity(0.12),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Row(
                 children: [
-                  const Icon(Icons.calendar_today, size: 16, color: AppTheme.primaryBlue),
+                  Icon(Icons.calendar_today, size: 16, color: AppTheme.adaptivePrimary(context)),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       'कालावधी: $filterTitle',
-                      style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AppTheme.primaryBlue),
+                      style: TextStyle(fontWeight: FontWeight.bold, fontSize: 14, color: AppTheme.adaptivePrimary(context)),
                     ),
                   ),
-                  const Icon(Icons.arrow_drop_down, color: AppTheme.primaryBlue),
+                  Icon(Icons.arrow_drop_down, color: AppTheme.adaptivePrimary(context)),
                 ],
               ),
             ),
@@ -436,8 +436,8 @@ class DailyWorkScreen extends ConsumerWidget {
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                 decoration: BoxDecoration(
-                  color: Colors.grey.shade100,
-                  border: Border(bottom: BorderSide(color: Colors.grey.shade300)),
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest.withOpacity(0.5),
+                  border: Border(bottom: BorderSide(color: Theme.of(context).dividerColor)),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -64,6 +64,7 @@ class _CreateBillScreenState extends ConsumerState<CreateBillScreen> {
   double _gstRate = 18.0;
 
   final List<_BillItemEntry> _items = [];
+  DateTime _invoiceDate = DateTime.now();
   bool _isLoading = false;
 
   @override
@@ -217,7 +218,7 @@ class _CreateBillScreenState extends ConsumerState<CreateBillScreen> {
                           prefixIcon: const Icon(Icons.search),
                           isDense: true,
                           filled: true,
-                          fillColor: Colors.grey.shade100,
+                          fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
                           border: OutlineInputBorder(borderRadius: BorderRadius.circular(10), borderSide: BorderSide.none),
                         ),
                         onChanged: (v) => setModalState(() => searchQuery = v.toLowerCase()),
@@ -322,6 +323,7 @@ class _CreateBillScreenState extends ConsumerState<CreateBillScreen> {
       final invId = await invoiceDao.createInvoice(
         invoice: InvoicesCompanion.insert(
           invoiceNumber: invNumber,
+          invoiceDate: drift.Value(_invoiceDate),
           category: _category,
           customerId: drift.Value(_selectedCustomerId),
           customerName: drift.Value(customer?.name ?? _walkInNameController.text.trim()),
@@ -497,6 +499,31 @@ class _CreateBillScreenState extends ConsumerState<CreateBillScreen> {
               ],
             ),
             const SizedBox(height: 8),
+
+            // Invoice Date Picker
+            Card(
+              margin: const EdgeInsets.only(bottom: 12),
+              child: ListTile(
+                leading: Icon(Icons.calendar_today, color: AppTheme.adaptivePrimary(context)),
+                title: const Text('बिल दिनांक (Invoice Date)', style: TextStyle(fontSize: 13)),
+                subtitle: Text(
+                  Formatters.date(_invoiceDate),
+                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                ),
+                trailing: const Icon(Icons.edit_calendar),
+                onTap: () async {
+                  final picked = await showDatePicker(
+                    context: context,
+                    initialDate: _invoiceDate,
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime.now().add(const Duration(days: 365)),
+                  );
+                  if (picked != null) {
+                    setState(() => _invoiceDate = picked);
+                  }
+                },
+              ),
+            ),
 
             // Items List
             ..._items.asMap().entries.map((entry) {

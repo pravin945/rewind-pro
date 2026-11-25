@@ -74,7 +74,7 @@ class ExpensesScreen extends ConsumerWidget {
 
       final picked = await showDateRangePicker(
         context: context,
-        firstDate: DateTime(2020),
+        firstDate: DateTime(2000),
         lastDate: DateTime.now().add(const Duration(days: 365)),
         initialDateRange: initialRange,
         helpText: 'कालावधी निवडा (Select Date Range)',
@@ -161,7 +161,7 @@ class ExpensesScreen extends ConsumerWidget {
                     final picked = await showDatePicker(
                       context: context,
                       initialDate: selectedDate,
-                      firstDate: DateTime(2020),
+                      firstDate: DateTime(2000),
                       lastDate: DateTime.now(),
                     );
                     if (picked != null) {
@@ -288,7 +288,7 @@ class ExpensesScreen extends ConsumerWidget {
           InkWell(
             onTap: () => _handleFilterSelection(context, ref, ExpenseFilter.custom),
             child: Container(
-              color: Colors.orange.shade50,
+              color: AppTheme.accentOrange.withOpacity(0.12),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Row(
                 children: [
@@ -313,8 +313,8 @@ class ExpensesScreen extends ConsumerWidget {
               return Container(
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  border: Border(bottom: BorderSide(color: Colors.grey.shade200)),
+                  color: Theme.of(context).cardTheme.color,
+                  border: Border(bottom: BorderSide(color: Theme.of(context).dividerColor)),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -373,7 +373,7 @@ class ExpensesScreen extends ConsumerWidget {
                         child: Row(
                           children: [
                             CircleAvatar(
-                              backgroundColor: Colors.red.shade50,
+                              backgroundColor: AppTheme.errorRed.withOpacity(0.12),
                               child: const Icon(Icons.money_off, color: Colors.red),
                             ),
                             const SizedBox(width: 12),

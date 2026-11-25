@@ -354,7 +354,7 @@ class RepairJobDetailsScreen extends ConsumerWidget {
                               Text(customer.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15)),
                               Row(
                                 children: [
-                                  Text(customer.mobile, style: const TextStyle(fontSize: 13, color: Colors.black87)),
+                                  Text(customer.mobile, style: const TextStyle(fontSize: 13)),
                                   const SizedBox(width: 6),
                                   InkWell(
                                     onTap: () => CustomerActionHelper.callPhone(context, customer.mobile),

@@ -159,7 +159,7 @@ class _CustomerDetailsScreenState extends ConsumerState<CustomerDetailsScreen> w
                                           children: [
                                             Text(
                                               'मोबाईल: ${customer.mobile}',
-                                              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600, color: Colors.black87),
+                                              style: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
                                             ),
                                             const SizedBox(width: 6),
                                             InkWell(
@@ -182,7 +182,7 @@ class _CustomerDetailsScreenState extends ConsumerState<CustomerDetailsScreen> w
                                             children: [
                                               Text(
                                                 'पर्यायी: ${customer.alternateMobile}',
-                                                style: const TextStyle(fontSize: 13, color: Colors.black54),
+                                                style: const TextStyle(fontSize: 13, color: Colors.grey),
                                               ),
                                               const SizedBox(width: 6),
                                               InkWell(
@@ -550,11 +550,11 @@ class _CustomerLedgerTab extends ConsumerWidget {
           children: [
             // Statement Share Card
             Card(
-              color: Colors.green.shade50,
+              color: AppTheme.successGreen.withOpacity(0.12),
               elevation: 0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
-                side: BorderSide(color: Colors.green.shade200),
+                side: BorderSide(color: AppTheme.successGreen.withOpacity(0.35)),
               ),
               child: Padding(
                 padding: const EdgeInsets.all(12),
@@ -678,7 +678,7 @@ class _CustomerLedgerTab extends ConsumerWidget {
                             Expanded(
                               child: Text(
                                 entry.subtitle,
-                                style: const TextStyle(fontSize: 12, color: Colors.black54),
+                                style: const TextStyle(fontSize: 12, color: Colors.grey),
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),

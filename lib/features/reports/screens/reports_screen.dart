@@ -159,17 +159,18 @@ class ReportsScreen extends ConsumerWidget {
 
           // Range Indicator
           Card(
-            color: Colors.blue.shade50,
+            color: AppTheme.primaryLight.withOpacity(0.12),
+            elevation: 0,
             child: Padding(
               padding: const EdgeInsets.all(12),
               child: Row(
                 children: [
-                  const Icon(Icons.calendar_today, color: AppTheme.primaryBlue, size: 20),
+                  Icon(Icons.calendar_today, color: AppTheme.adaptivePrimary(context), size: 20),
                   const SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       'कालावधी: ${Formatters.date(range.start)} ते ${Formatters.date(range.end)}',
-                      style: const TextStyle(fontWeight: FontWeight.bold, color: AppTheme.primaryBlue),
+                      style: TextStyle(fontWeight: FontWeight.bold, color: AppTheme.adaptivePrimary(context)),
                     ),
                   ),
                 ],

@@ -23,6 +23,7 @@ class PendingPaymentsScreen extends ConsumerWidget {
   void _showRecordPaymentDialog(BuildContext context, WidgetRef ref, CustomerPendingInfo item) {
     final amountController = TextEditingController(text: item.remainingBalance.toStringAsFixed(0));
     String mode = 'cash';
+    DateTime selectedDate = DateTime.now();
     final refController = TextEditingController();
     final notesController = TextEditingController();
 
@@ -38,7 +39,7 @@ class PendingPaymentsScreen extends ConsumerWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.red.shade50,
+                    color: AppTheme.errorRed.withOpacity(0.12),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Row(
@@ -89,6 +90,24 @@ class PendingPaymentsScreen extends ConsumerWidget {
                   controller: notesController,
                   decoration: const InputDecoration(labelText: 'टीप (Optional)'),
                 ),
+                const SizedBox(height: 8),
+                ListTile(
+                  contentPadding: EdgeInsets.zero,
+                  title: const Text('पेमेंट दिनांक:', style: TextStyle(fontSize: 13)),
+                  subtitle: Text(Formatters.date(selectedDate), style: const TextStyle(fontWeight: FontWeight.bold)),
+                  trailing: Icon(Icons.calendar_month, color: AppTheme.adaptivePrimary(context)),
+                  onTap: () async {
+                    final picked = await showDatePicker(
+                      context: context,
+                      initialDate: selectedDate,
+                      firstDate: DateTime(2000),
+                      lastDate: DateTime.now().add(const Duration(days: 30)),
+                    );
+                    if (picked != null) {
+                      setDialogState(() => selectedDate = picked);
+                    }
+                  },
+                ),
               ],
             ),
           ),
@@ -102,6 +121,7 @@ class PendingPaymentsScreen extends ConsumerWidget {
                 await ref.read(paymentDaoProvider).recordPayment(
                       PaymentsCompanion.insert(
                         customerId: item.customer.id,
+                        paymentDate: drift.Value(selectedDate),
                         amountReceived: amt,
                         paymentMode: drift.Value(mode),
                         transactionReference: drift.Value(refController.text.trim().isEmpty ? null : refController.text.trim()),
@@ -196,7 +216,7 @@ class PendingPaymentsScreen extends ConsumerWidget {
             children: [
               // Summary Banner
               Container(
-                color: Colors.red.shade50,
+                color: AppTheme.errorRed.withOpacity(0.12),
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,

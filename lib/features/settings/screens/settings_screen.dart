@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/database/app_database.dart';
 import '../../../core/providers/database_providers.dart';
+import '../../../core/theme/app_theme.dart';
 
 class SettingsScreen extends ConsumerStatefulWidget {
   const SettingsScreen({super.key});
@@ -276,6 +277,31 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               }).toList(),
               onChanged: (val) {
                 if (val != null) setState(() => _selectedLanguage = val);
+              },
+            ),
+            const SizedBox(height: 20),
+
+            // Theme Selection
+            const Text(
+              'ॲप थीम (Light / Dark Theme)',
+              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 12),
+
+            DropdownButtonFormField<ThemeMode>(
+              value: ref.watch(themeModeProvider),
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.brightness_6),
+              ),
+              items: const [
+                DropdownMenuItem(value: ThemeMode.system, child: Text('फोननुसार (System Default)')),
+                DropdownMenuItem(value: ThemeMode.light, child: Text('लाइट थीम (Light Mode)')),
+                DropdownMenuItem(value: ThemeMode.dark, child: Text('डार्क थीम (Dark Mode)')),
+              ],
+              onChanged: (val) {
+                if (val != null) {
+                  ref.read(themeModeProvider.notifier).state = val;
+                }
               },
             ),
             const SizedBox(height: 20),

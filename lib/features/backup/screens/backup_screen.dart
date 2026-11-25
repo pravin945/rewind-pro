@@ -219,7 +219,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
                   const Divider(height: 24),
                   const Text(
                     'आपला सर्व डेटा सुरक्षित SQLite फाईलमध्ये सेव्ह करा आणि थेट WhatsApp, Google Drive किंवा फोन मेमरीमध्ये शेअर करा.',
-                    style: TextStyle(fontSize: 13, color: Colors.black87),
+                    style: TextStyle(fontSize: 13),
                   ),
                   const SizedBox(height: 16),
                   Row(
@@ -303,27 +303,27 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.blue.shade50,
+                      color: AppTheme.primaryLight.withOpacity(0.12),
                       borderRadius: BorderRadius.circular(8),
-                      border: Border.all(color: Colors.blue.shade100),
+                      border: Border.all(color: AppTheme.primaryLight.withOpacity(0.3)),
                     ),
                     child: const Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
                           children: [
-                            Icon(Icons.info_outline, size: 16, color: Colors.blue),
+                            Icon(Icons.info_outline, size: 16, color: AppTheme.primaryLight),
                             SizedBox(width: 6),
                             Text(
                               'गुगल अकाऊंट सुरक्षितता:',
-                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: Colors.blue),
+                              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 12, color: AppTheme.primaryLight),
                             ),
                           ],
                         ),
                         SizedBox(height: 4),
                         Text(
                           '• Google Sign-In वापरण्यासाठी पासवर्ड देण्याची अजिबात गरज नसते.\n• Google Cloud OAuth Client ID द्वारे फोनमधील "Sign in with Google" पॉपअपमधून थेट जोडणी होते.\n• स्थानिक बॅकअप शेअर करून आपण आत्ताच Google Drive ॲपमध्ये सुरक्षित फाईल पाठवू शकता.',
-                          style: TextStyle(fontSize: 12, color: Colors.black87, height: 1.4),
+                          style: TextStyle(fontSize: 12, height: 1.4),
                         ),
                       ],
                     ),
@@ -332,7 +332,7 @@ class _BackupScreenState extends ConsumerState<BackupScreen> {
                   Container(
                     padding: const EdgeInsets.all(10),
                     decoration: BoxDecoration(
-                      color: Colors.green.shade50,
+                      color: AppTheme.successGreen.withOpacity(0.12),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: const Row(
